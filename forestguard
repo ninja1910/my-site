@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gatekeeper Challenge</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 60px;
+      background-color: #e9f5e4;
+    }
+    input, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+    }
+    #question {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Answer the Forest Gaurdians Question</h1>
+  <div id="question">Loading question...</div>
+
+  <input type="text" id="answerInput" placeholder="Type your answer">
+  <br>
+  <button onclick="checkAnswer()">Submit</button>
+
+  <script>
+    // Questions and answers bank
+    const qa = [
+      { question: "What is the name of the great wolf spirit, friend to Shiv the destroyer?", answer: "uriel" },
+      { question: "What walks on four legs in the morning, two in the day, and three at night?", answer: "man" },
+      { question: "Can you say please?", answer: "yes" },
+      { question: "Are you going to feed the bears?", answer: "no" }
+    ];
+
+    let currentQA;
+
+    // Pick a random question
+    function pickRandomQuestion() {
+      const index = Math.floor(Math.random() * qa.length);
+      currentQA = qa[index];
+      document.getElementById("question").textContent = currentQA.question;
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById("answerInput").value.trim().toLowerCase();
+      if (input === currentQA.answer.toLowerCase()) {
+        window.location.href = "forest.html"; // CHANGE TO YOUR DESTINATION PAGE
+      } else {
+        alert("That is not the answer the Guardian seeks.");
+      }
+    }
+
+    pickRandomQuestion();
+  </script>
+
+</body>
+</html>

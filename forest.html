@@ -39,7 +39,6 @@
 </head>
 <body>
   <h1>Grimself Forest</h1>
-  <p>You hear birds chirping. Moss grows thick on the stones.</p>
 </n>
   <div class="message" id="randomMessage"></div>
   <script>
@@ -55,7 +54,47 @@
     const chosenMessage = messages[randomIndex];
     document.getElementById("randomMessage").textContent = chosenMessage;
   </script>
+  
+<div id="stepCount">Steps Taken: 0</div>
+  <div id="message">Click the button to begin your journey...</div>
+  <button onclick="takeStep()">Take a Step</button>
 
+  <script>
+    const messages = [
+      "You find a strange pebble on the path.",
+      "The wind whispers through the trees.",
+      "A butterfly flits past your ear.",
+      "Something rustles in the bushes nearby.",
+      "You step over a tiny stream.",
+      "You find a note carved into a tree: 'Keep going.'",
+      "You smell smoke, but see no fire.",
+      "You feel like you’re being watched.",
+      "A path splits — but you keep walking forward.",
+      "You hear distant music, faint and haunting."
+    ];
+
+    let usedMessages = [];
+    let stepCount = 0;
+
+    function takeStep() {
+      stepCount++;
+      document.getElementById("stepCount").textContent = `Steps Taken: ${stepCount}`;
+
+      if (usedMessages.length === messages.length) {
+        usedMessages = []; // Reset if all messages are used
+      }
+
+      // Filter out already used messages
+      const remainingMessages = messages.filter(msg => !usedMessages.includes(msg));
+
+      // Select a random one
+      const randomMsg = remainingMessages[Math.floor(Math.random() * remainingMessages.length)];
+
+      // Display and record it
+      document.getElementById("message").textContent = randomMsg;
+      usedMessages.push(randomMsg);
+    }
+  </script>
   <a href="index.html">← Go back to the hub</a>
 </body>
 </html>

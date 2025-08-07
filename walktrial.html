@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Walking World</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #d0e7c3; /* Light forest green */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #stepCount {
+      font-size: 1.5em;
+      margin-bottom: 20px;
+    }
+
+    #message {
+      background: white;
+      padding: 1em;
+      border-radius: 8px;
+      max-width: 400px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      background-color: #4a7c59;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3a6449;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌲 Walk the World 🌲</h1>
+  <div id="stepCount">Steps Taken: 0</div>
+  <div id="message">Click the button to begin your journey...</div>
+  <button onclick="takeStep()">Take a Step</button>
+
+  <script>
+    const messages = [
+      "You find a strange pebble on the path.",
+      "The wind whispers through the trees.",
+      "A butterfly flits past your ear.",
+      "Something rustles in the bushes nearby.",
+      "You step over a tiny stream.",
+      "You find a note carved into a tree: 'Keep going.'",
+      "You smell smoke, but see no fire.",
+      "You feel like you’re being watched.",
+      "A path splits — but you keep walking forward.",
+      "You hear distant music, faint and haunting."
+    ];
+
+    let usedMessages = [];
+    let stepCount = 0;
+
+    function takeStep() {
+      stepCount++;
+      document.getElementById("stepCount").textContent = `Steps Taken: ${stepCount}`;
+
+      if (usedMessages.length === messages.length) {
+        usedMessages = []; // Reset if all messages are used
+      }
+
+      // Filter out already used messages
+      const remainingMessages = messages.filter(msg => !usedMessages.includes(msg));
+
+      // Select a random one
+      const randomMsg = remainingMessages[Math.floor(Math.random() * remainingMessages.length)];
+
+      // Display and record it
+      document.getElementById("message").textContent = randomMsg;
+      usedMessages.push(randomMsg);
+    }
+  </script>
+<a href="index.html">To the In Between</a>
+</body>
+</html>

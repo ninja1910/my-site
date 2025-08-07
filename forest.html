@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>The Forest</title>
+  <title>Grimseld Forest</title>
   <style>
     body {
       text-align: center;
@@ -40,6 +40,21 @@
 <body>
   <h1>🌲 The Forest</h1>
   <p>You hear birds chirping. Moss grows thick on the stones.</p>
+</n>
+
+    <script>
+    const messages = [
+      "You find a note pinned to a tree: 'Beware the shadows after dusk.'",
+      "A moss-covered stone whispers your name... somehow.",
+      "The wind carries the scent of pine and forgotten memories.",
+      "You hear laughter, faint and distant, deeper in the woods.",
+      "Someone has carved a heart into the bark of an old oak tree."
+    ];
+
+    const randomIndex = Math.floor(Math.random() * messages.length);
+    const chosenMessage = messages[randomIndex];
+    document.getElementById("randomMessage").textContent = chosenMessage;
+  </script>
 
   <a href="index.html">← Go back to the hub</a>
 </body>

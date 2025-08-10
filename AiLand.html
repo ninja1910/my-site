@@ -140,11 +140,11 @@
   <section id="codePuzzle">
     <h2>Code Puzzle — Unlock the Hidden Protocol</h2>
     <p><strong>Decrypt this passphrase:</strong></p>
-    <pre>
---. .- - . .-- .- -.--</pre>
+    <pre id="morseCodeDisplay">Loading...</pre>
     <p>Enter the decoded word:</p>
     <input type="text" id="codeInput" placeholder="Your answer here..." autocomplete="off" />
     <button id="codeBtn" onclick="checkCode()">Unlock</button>
+    <p id="morseHint" style="color:#80d0c7; font-style: italic; margin-top: 10px;"></p>
   </section>
 
   <section id="guessGame">
@@ -165,11 +165,7 @@
     <h2>Hidden Data Logs</h2>
     <button onclick="toggleLogs()">Reveal / Hide Logs</button>
     <div id="logsContent" style="display:none; margin-top:15px; max-height: 200px; overflow-y: auto; background:#051a1a; padding:15px; border-radius:10px; font-family: monospace; font-size: 0.9em;">
-      <p><code>[2025-08-10 04:12:01] AI: Monitoring neural feedback loop...</code></p>
-      <p><code>[2025-08-10 04:13:15] AI: Anomaly detected in sector 7G.</code></p>
-      <p><code>[2025-08-10 04:14:22] AI: Initiating corrective algorithm sequence.</code></p>
-      <p><code>[2025-08-10 04:15:47] AI: Protocol override pending user authentication.</code></p>
-      <p><code>[2025-08-10 04:16:00] AI: Awaiting passphrase to unlock next stage...</code></p>
+      <!-- Logs dynamically added here -->
     </div>
   </section>
 
@@ -219,17 +215,58 @@
     document.getElementById("aiQuote").textContent = quotes[idx];
   }
 
-  // Code Puzzle
+  // Morse code puzzles bank
+  const morseBank = [
+    {code: "--. .- - . .-- .- -.--", answer: "gateway", hints: [
+      "It's a common entry point.",
+      "Think of a door or entrance.",
+      "Starts with 'g' and ends with 'y'."
+    ]},
+    {code: "-. . -..- ..- ...", answer: "nexus", hints: [
+      "A connection point.",
+      "Central hub of a network.",
+      "Ends with 'us'."
+    ]},
+    {code: ".--. .-. --- -.-. --- .-..", answer: "protocol", hints: [
+      "A set of rules.",
+      "Used in communication.",
+      "Starts with 'p'."
+    ]},
+    {code: "... . -.-. .-. . -", answer: "secret", hints: [
+      "Hidden or unknown.",
+      "Opposite of public.",
+      "Starts with 's' and ends with 't'."
+    ]}
+  ];
+
+  // Select random Morse puzzle on page load
+  let currentPuzzleIndex = Math.floor(Math.random() * morseBank.length);
+  let currentPuzzle = morseBank[currentPuzzleIndex];
+  document.getElementById('morseCodeDisplay').textContent = currentPuzzle.code;
+
+  // Track hint count
+  let hintCount = 0;
+
   function checkCode() {
     const input = document.getElementById("codeInput").value.trim().toLowerCase();
-    if(input === "gateway") {
-      addClue("Decrypted passphrase: gateway");
+    const hintElem = document.getElementById("morseHint");
+
+    if(input === currentPuzzle.answer) {
+      addClue(`Decrypted passphrase: ${currentPuzzle.answer}`);
       alert("Protocol unlocked! You’ve found a clue.");
       document.getElementById("codeBtn").disabled = true;
+      hintElem.textContent = "";
     } else {
+      if (hintCount < currentPuzzle.hints.length) {
+        hintElem.textContent = "Hint: " + currentPuzzle.hints[hintCount];
+        hintCount++;
+      } else {
+        hintElem.textContent = "No more hints. Try carefully.";
+      }
       alert("Access Denied. Try again.");
     }
   }
+
 
   // Inventory for clues
   let inventory = [];
@@ -299,39 +336,23 @@
     document.getElementById("glitchOutput").textContent = glitches[idx];
   }
 
-  // Data Logs Toggle
-  function toggleLogs() {
-    const logs = document.getElementById("logsContent");
-    if (logs.style.display === "none") {
-      logs.style.display = "block";
-    } else {
-      logs.style.display = "none";
-    }
-  }
+  // Dynamic Data Logs
 
-  // Passphrase Gate - user must have collected 2 clues to proceed
-  function checkPassphrase() {
-    const input = document.getElementById("passphraseInput").value.trim().toLowerCase();
-    const feedback = document.getElementById("passFeedback");
+  const logContainer = document.getElementById("logsContent");
 
-    // You must have both clues collected
-    if (inventory.length < 2) {
-      feedback.textContent = "You must find more clues before proceeding.";
-      return;
-    }
+  const baseLogs = [
+    "[2025-08-10 04:12:01] AI: Monitoring neural feedback loop...",
+    "[2025-08-10 04:13:15] AI: Anomaly detected in sector 7G.",
+    "[2025-08-10 04:14:22] AI: Initiating corrective algorithm sequence.",
+    "[2025-08-10 04:15:47] AI: Protocol override pending user authentication.",
+    "[2025-08-10 04:16:00] AI: Awaiting passphrase to unlock next stage..."
+  ];
 
-    if (input === "gateway to nexus") {
-      feedback.style.color = "#00ff88";
-      feedback.textContent = "Passphrase accepted. Access granted.";
-      document.getElementById("secretMessage").style.display = "block";
-      // Here you can do more, like unlock next level, redirect, etc.
-    } else {
-      feedback.style.color = "#ff6666";
-      feedback.textContent = "Incorrect passphrase.";
-    }
-  }
-
-</script>
-
-</body>
-</html>
+  // Some dynamic logs with subtle clues:
+  const dynamicLogPool = [
+    "Warning: Gateway module initialized successfully.",
+    "User input expected: passphrase required.",
+    "Scanning network nexus for anomalies...",
+    "Security protocol active. Access level: restricted.",
+    "Unusual activity in secret node detected.",
+    "Encryption keys rotating. Synchronizing clocks.",

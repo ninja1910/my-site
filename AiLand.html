@@ -356,3 +356,76 @@
     "Security protocol active. Access level: restricted.",
     "Unusual activity in secret node detected.",
     "Encryption keys rotating. Synchronizing clocks.",
+    "Debug: 'gateway' referenced in core memory.",
+    "AI system override disabled temporarily."
+  ];
+
+  let currentLogs = [...baseLogs];
+
+  // Initialize logs UI
+  function renderLogs() {
+    logContainer.innerHTML = "";
+    currentLogs.forEach(log => {
+      const p = document.createElement("p");
+      p.textContent = log;
+      p.style.opacity = "1";
+      logContainer.appendChild(p);
+    });
+    logContainer.scrollTop = logContainer.scrollHeight;
+  }
+
+  // Add a new random dynamic log every 10-20 seconds
+  function addDynamicLog() {
+    if (currentLogs.length > 30) {
+      // Remove oldest log for scrolling effect
+      currentLogs.shift();
+    }
+    const randomLog = dynamicLogPool[Math.floor(Math.random() * dynamicLogPool.length)];
+    const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
+    currentLogs.push(`[${timestamp}] AI: ${randomLog}`);
+    renderLogs();
+  }
+
+  // Start dynamic logs after first render
+  renderLogs();
+  setInterval(addDynamicLog, 10000 + Math.random()*10000); // every 10-20s
+
+  // Toggle logs visibility
+  function toggleLogs() {
+    const logs = document.getElementById("logsContent");
+    if (logs.style.display === "none") {
+      logs.style.display = "block";
+    } else {
+      logs.style.display = "none";
+    }
+  }
+
+  // Password Gate Section — must enter any clue from inventory to proceed
+  const secretPassphrases = inventory; // We'll dynamically check inventory for passphrases
+
+  function checkPassphrase() {
+    const input = document.getElementById("passphraseInput").value.trim().toLowerCase();
+    const feedback = document.getElementById("passFeedback");
+    const secretSection = document.getElementById("secretMessage");
+
+    // Check if input matches any clue's keyword (very simple match)
+    // Extract last word from each clue in inventory as passphrase candidate
+    let passphrases = inventory.map(clue => {
+      let words = clue.toLowerCase().split(" ");
+      return words[words.length - 1].replace(/[^a-z]/g, ''); // simple cleaning
+    });
+
+    if (passphrases.includes(input)) {
+      feedback.style.color = "#00ff99";
+      feedback.textContent = "Access Granted!";
+      secretSection.style.display = "block";
+      document.getElementById("passBtn").disabled = true;
+      document.getElementById("passphraseInput").disabled = true;
+    } else {
+      feedback.style.color = "#ff6666";
+      feedback.textContent = "Access Denied. Try a clue you've found.";
+    }
+  }
+</script>
+</body>
+</html>

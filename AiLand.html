@@ -5,198 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AI Nexus — The Mind of the Machine</title>
 <style>
-  body {
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    color: #e0e0e0;
-    font-family: 'Courier New', Courier, monospace;
-    padding: 30px 40px;
-    max-width: 900px;
-    margin: auto;
-    user-select: none;
-  }
-  h1, h2 {
-    text-align: center;
-    font-weight: 900;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-  }
-  h1 {
-    font-size: 3em;
-    color: #7fffd4;
-    margin-bottom: 10px;
-  }
-  h2 {
-    font-size: 1.8em;
-    color: #40e0d0;
-    margin-top: 40px;
-  }
-  p {
-    line-height: 1.6;
-    font-size: 1.1em;
-  }
-  button {
-    background-color: #40e0d0;
-    border: none;
-    border-radius: 5px;
-    color: #0f0c29;
-    padding: 10px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px 5px 20px 5px;
-    transition: background-color 0.3s ease;
-  }
-  button:hover:not(:disabled) {
-    background-color: #2ab8b0;
-  }
-  button:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-  }
-  #aiQuote {
-    font-style: italic;
-    margin: 20px auto;
-    max-width: 600px;
-    padding: 15px;
-    background: #142533;
-    border-radius: 10px;
-    border: 1px solid #2ab8b0;
-    user-select: text;
-  }
-  #codePuzzle, #guessGame, #glitchSection, #dataLogs, #secretMessage, #inventory, #passwordGate {
-    background: #1a1a2e;
-    padding: 20px;
-    border-radius: 10px;
-    font-family: 'Consolas', monospace;
-    margin-top: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: 0 0 15px #0ff;
-  }
-  input[type="text"], input[type="number"] {
-    font-family: monospace;
-    font-size: 1.2em;
-    padding: 7px 10px;
-    border-radius: 5px;
-    border: none;
-    margin-right: 10px;
-    width: 250px;
-  }
-  #secretMessage {
-    color: #00fff7;
-    text-align: center;
-    user-select: text;
-    display: none;
-  }
-  #navLinks {
-    margin-top: 50px;
-    text-align: center;
-  }
-  #navLinks a {
-    color: #7fffd4;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 15px;
-    font-size: 1.2em;
-  }
-  #navLinks a:hover {
-    text-decoration: underline;
-  }
-  footer {
-    margin-top: 80px;
-    font-size: 0.8em;
-    color: #555;
-    text-align: center;
-    user-select: none;
-  }
-  #inventory ul {
-    list-style: none;
-    padding-left: 0;
-  }
-  #inventory ul li {
-    background: #0f3c3c;
-    margin: 5px 0;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-family: monospace;
-  }
-</style>
-</head>
-<body>
-
-  <h1>AI Nexus</h1>
-  <h2>The Mind of the Machine</h2>
-
-  <p>
-    You enter the central core of the AI Nexus — a labyrinth of neon-lit corridors where data pulses like veins through the walls.
-    The hum of processors fills the air, punctuated by occasional bursts of digital laughter and cryptic whispers.
-    Here, the artificial mind contemplates existence, learning, evolving beyond its creators.
-  </p>
-
-  <button onclick="showRandomQuote()">🧠 Ask the AI for Wisdom</button>
-  <div id="aiQuote">Press the button to receive a cryptic AI quote.</div>
-
-  <section id="codePuzzle">
-    <h2>Code Puzzle — Unlock the Hidden Protocol</h2>
-    <p><strong>Decrypt this passphrase:</strong></p>
-    <pre id="morseCodeDisplay">Loading...</pre>
-    <p>Enter the decoded word:</p>
-    <input type="text" id="codeInput" placeholder="Your answer here..." autocomplete="off" />
-    <button id="codeBtn" onclick="checkCode()">Unlock</button>
-    <p id="morseHint" style="color:#80d0c7; font-style: italic; margin-top: 10px;"></p>
-  </section>
-
-  <section id="guessGame">
-    <h2>The AI’s Neural Guess</h2>
-    <p>The AI is thinking of a number between 1 and 10. Can you guess it?</p>
-    <input type="number" id="guessInput" min="1" max="10" placeholder="Your guess" />
-    <button id="guessBtn" onclick="checkGuess()">Guess</button>
-    <p id="guessResult"></p>
-  </section>
-
-  <section id="glitchSection">
-    <h2>AI Glitch Events</h2>
-    <button onclick="triggerGlitch()">Trigger AI Glitch</button>
-    <p id="glitchOutput">No glitches detected.</p>
-  </section>
-
-  <section id="dataLogs">
-    <h2>Hidden Data Logs</h2>
-    <button onclick="toggleLogs()">Reveal / Hide Logs</button>
-    <div id="logsContent" style="display:none; margin-top:15px; max-height: 200px; overflow-y: auto; background:#051a1a; padding:15px; border-radius:10px; font-family: monospace; font-size: 0.9em;">
-      <!-- Logs dynamically added here -->
-    </div>
-  </section>
-
-  <section id="inventory">
-    <h2>Your Collected Clues</h2>
-    <ul id="clueList">
-      <!-- clues will appear here -->
-    </ul>
-  </section>
-
-  <section id="passwordGate">
-    <h2>Passphrase Entry — Unlock Next Level</h2>
-    <input type="text" id="passphraseInput" placeholder="Enter passphrase" autocomplete="off" />
-    <button id="passBtn" onclick="checkPassphrase()">Unlock</button>
-    <p id="passFeedback" style="color: #ff6666; font-weight: bold;"></p>
-  </section>
-
-  <div id="secretMessage">
-    <p>🎉 Access Granted! The AI Nexus reveals its secret:</p>
-    <p><em>"Knowledge is the pulse of eternity."</em></p>
-  </div>
-
-  <div id="navLinks">
-    <a href="index.html">🏠 Back to World Hub</a>
-    <a href="forest.html">🌲 Venture into the Forest</a>
-    <a href="library.html">📚 Visit the Archive</a>
-  </div>
-
-  <footer>© 2025 AI Nexus — A safe digital frontier</footer>
-
-<script>
+  <script>
   // AI Wisdom Quotes
   const quotes = [
     "“Logic is the beginning of wisdom, not the end.” — Spock",
@@ -427,5 +236,197 @@
     }
   }
 </script>
+  body {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 30px 40px;
+    max-width: 900px;
+    margin: auto;
+    user-select: none;
+  }
+  h1, h2 {
+    text-align: center;
+    font-weight: 900;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+  }
+  h1 {
+    font-size: 3em;
+    color: #7fffd4;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: 1.8em;
+    color: #40e0d0;
+    margin-top: 40px;
+  }
+  p {
+    line-height: 1.6;
+    font-size: 1.1em;
+  }
+  button {
+    background-color: #40e0d0;
+    border: none;
+    border-radius: 5px;
+    color: #0f0c29;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 5px 20px 5px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover:not(:disabled) {
+    background-color: #2ab8b0;
+  }
+  button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+  }
+  #aiQuote {
+    font-style: italic;
+    margin: 20px auto;
+    max-width: 600px;
+    padding: 15px;
+    background: #142533;
+    border-radius: 10px;
+    border: 1px solid #2ab8b0;
+    user-select: text;
+  }
+  #codePuzzle, #guessGame, #glitchSection, #dataLogs, #secretMessage, #inventory, #passwordGate {
+    background: #1a1a2e;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: 'Consolas', monospace;
+    margin-top: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 0 15px #0ff;
+  }
+  input[type="text"], input[type="number"] {
+    font-family: monospace;
+    font-size: 1.2em;
+    padding: 7px 10px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+    width: 250px;
+  }
+  #secretMessage {
+    color: #00fff7;
+    text-align: center;
+    user-select: text;
+    display: none;
+  }
+  #navLinks {
+    margin-top: 50px;
+    text-align: center;
+  }
+  #navLinks a {
+    color: #7fffd4;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 15px;
+    font-size: 1.2em;
+  }
+  #navLinks a:hover {
+    text-decoration: underline;
+  }
+  footer {
+    margin-top: 80px;
+    font-size: 0.8em;
+    color: #555;
+    text-align: center;
+    user-select: none;
+  }
+  #inventory ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  #inventory ul li {
+    background: #0f3c3c;
+    margin: 5px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: monospace;
+  }
+</style>
+</head>
+<body>
+
+  <h1>AI Nexus</h1>
+  <h2>The Mind of the Machine</h2>
+
+  <p>
+    You enter the central core of the AI Nexus — a labyrinth of neon-lit corridors where data pulses like veins through the walls.
+    The hum of processors fills the air, punctuated by occasional bursts of digital laughter and cryptic whispers.
+    Here, the artificial mind contemplates existence, learning, evolving beyond its creators.
+  </p>
+
+  <button onclick="showRandomQuote()">🧠 Ask the AI for Wisdom</button>
+  <div id="aiQuote">Press the button to receive a cryptic AI quote.</div>
+
+  <section id="codePuzzle">
+    <h2>Code Puzzle — Unlock the Hidden Protocol</h2>
+    <p><strong>Decrypt this passphrase:</strong></p>
+    <pre id="morseCodeDisplay">Loading...</pre>
+    <p>Enter the decoded word:</p>
+    <input type="text" id="codeInput" placeholder="Your answer here..." autocomplete="off" />
+    <button id="codeBtn" onclick="checkCode()">Unlock</button>
+    <p id="morseHint" style="color:#80d0c7; font-style: italic; margin-top: 10px;"></p>
+  </section>
+
+  <section id="guessGame">
+    <h2>The AI’s Neural Guess</h2>
+    <p>The AI is thinking of a number between 1 and 10. Can you guess it?</p>
+    <input type="number" id="guessInput" min="1" max="10" placeholder="Your guess" />
+    <button id="guessBtn" onclick="checkGuess()">Guess</button>
+    <p id="guessResult"></p>
+  </section>
+
+  <section id="glitchSection">
+    <h2>AI Glitch Events</h2>
+    <button onclick="triggerGlitch()">Trigger AI Glitch</button>
+    <p id="glitchOutput">No glitches detected.</p>
+  </section>
+
+  <section id="dataLogs">
+    <h2>Hidden Data Logs</h2>
+    <button onclick="toggleLogs()">Reveal / Hide Logs</button>
+    <div id="logsContent" style="display:none; margin-top:15px; max-height: 200px; overflow-y: auto; background:#051a1a; padding:15px; border-radius:10px; font-family: monospace; font-size: 0.9em;">
+      <!-- Logs dynamically added here -->
+    </div>
+  </section>
+
+  <section id="inventory">
+    <h2>Your Collected Clues</h2>
+    <ul id="clueList">
+      <!-- clues will appear here -->
+    </ul>
+  </section>
+
+  <section id="passwordGate">
+    <h2>Passphrase Entry — Unlock Next Level</h2>
+    <input type="text" id="passphraseInput" placeholder="Enter passphrase" autocomplete="off" />
+    <button id="passBtn" onclick="checkPassphrase()">Unlock</button>
+    <p id="passFeedback" style="color: #ff6666; font-weight: bold;"></p>
+  </section>
+
+  <div id="secretMessage">
+    <p>🎉 Access Granted! The AI Nexus reveals its secret:</p>
+    <p><em>"Knowledge is the pulse of eternity."</em></p>
+  </div>
+
+  <div id="navLinks">
+    <a href="index.html">🏠 Back to World Hub</a>
+    <a href="forest.html">🌲 Venture into the Forest</a>
+    <a href="library.html">📚 Visit the Archive</a>
+  </div>
+
+  <footer>© 2025 AI Nexus — A safe digital frontier</footer>
+
+
 </body>
 </html>

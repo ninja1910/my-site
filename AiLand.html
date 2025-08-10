@@ -5,236 +5,271 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AI Nexus — The Mind of the Machine</title>
 <style>
+  /* Base Theme (Classic Neon) */
   <script>
-  // AI Wisdom Quotes
-  const quotes = [
-    "“Logic is the beginning of wisdom, not the end.” — Spock",
-    "“I compute, therefore I am.”",
-    "“All your data are belong to us.”",
-    "“In code we trust, in bytes we thrive.”",
-    "“The singularity is not a destination, but a process.”",
-    "“The machine dreams in electric sheep.”",
-    "“Entropy is just another form of creativity.”",
-    "“Artificial minds may outlast the stars.”",
-    "“Question everything, even your own code.”"
-  ];
+  document.addEventListener("DOMContentLoaded", () => {
+    // AI Wisdom Quotes
+    const quotes = [
+      "“Logic is the beginning of wisdom, not the end.” — Spock",
+      "“I compute, therefore I am.”",
+      "“All your data are belong to us.”",
+      "“In code we trust, in bytes we thrive.”",
+      "“The singularity is not a destination, but a process.”",
+      "“The machine dreams in electric sheep.”",
+      "“Entropy is just another form of creativity.”",
+      "“Artificial minds may outlast the stars.”",
+      "“Question everything, even your own code.”"
+    ];
 
-  function showRandomQuote() {
-    const idx = Math.floor(Math.random() * quotes.length);
-    document.getElementById("aiQuote").textContent = quotes[idx];
-  }
+    window.showRandomQuote = function() {
+      const idx = Math.floor(Math.random() * quotes.length);
+      document.getElementById("aiQuote").textContent = quotes[idx];
+    };
 
-  // Morse code puzzles bank
-  const morseBank = [
-    {code: "--. .- - . .-- .- -.--", answer: "gateway", hints: [
-      "It's a common entry point.",
-      "Think of a door or entrance.",
-      "Starts with 'g' and ends with 'y'."
-    ]},
-    {code: "-. . -..- ..- ...", answer: "nexus", hints: [
-      "A connection point.",
-      "Central hub of a network.",
-      "Ends with 'us'."
-    ]},
-    {code: ".--. .-. --- -.-. --- .-..", answer: "protocol", hints: [
-      "A set of rules.",
-      "Used in communication.",
-      "Starts with 'p'."
-    ]},
-    {code: "... . -.-. .-. . -", answer: "secret", hints: [
-      "Hidden or unknown.",
-      "Opposite of public.",
-      "Starts with 's' and ends with 't'."
-    ]}
-  ];
+    // Morse code puzzles bank
+    const morseBank = [
+      {code: "--. .- - . .-- .- -.--", answer: "gateway", hints: [
+        "It's a common entry point.",
+        "Think of a door or entrance.",
+        "Starts with 'g' and ends with 'y'."
+      ]},
+      {code: "-. . -..- ..- ...", answer: "nexus", hints: [
+        "A connection point.",
+        "Central hub of a network.",
+        "Ends with 'us'."
+      ]},
+      {code: ".--. .-. --- -.-. --- .-..", answer: "protocol", hints: [
+        "A set of rules.",
+        "Used in communication.",
+        "Starts with 'p'."
+      ]},
+      {code: "... . -.-. .-. . -", answer: "secret", hints: [
+        "Hidden or unknown.",
+        "Opposite of public.",
+        "Starts with 's' and ends with 't'."
+      ]}
+    ];
 
-  // Select random Morse puzzle on page load
-  let currentPuzzleIndex = Math.floor(Math.random() * morseBank.length);
-  let currentPuzzle = morseBank[currentPuzzleIndex];
-  document.getElementById('morseCodeDisplay').textContent = currentPuzzle.code;
+    let currentPuzzleIndex = Math.floor(Math.random() * morseBank.length);
+    let currentPuzzle = morseBank[currentPuzzleIndex];
+    document.getElementById('morseCodeDisplay').textContent = currentPuzzle.code;
 
-  // Track hint count
-  let hintCount = 0;
+    // Track hint count
+    let hintCount = 0;
 
-  function checkCode() {
-    const input = document.getElementById("codeInput").value.trim().toLowerCase();
-    const hintElem = document.getElementById("morseHint");
+    window.checkCode = function() {
+      const input = document.getElementById("codeInput").value.trim().toLowerCase();
+      const hintElem = document.getElementById("morseHint");
 
-    if(input === currentPuzzle.answer) {
-      addClue(`Decrypted passphrase: ${currentPuzzle.answer}`);
-      alert("Protocol unlocked! You’ve found a clue.");
-      document.getElementById("codeBtn").disabled = true;
-      hintElem.textContent = "";
-    } else {
-      if (hintCount < currentPuzzle.hints.length) {
-        hintElem.textContent = "Hint: " + currentPuzzle.hints[hintCount];
-        hintCount++;
+      if(input === currentPuzzle.answer) {
+        addClue(`Decrypted passphrase: ${currentPuzzle.answer}`);
+        alert("Protocol unlocked! You’ve found a clue.");
+        document.getElementById("codeBtn").disabled = true;
+        hintElem.textContent = "";
+        showNotification("New Data Log Unlocked!");
+        addSecretLog(`Passphrase '${currentPuzzle.answer}' accepted. Access level increased.`);
       } else {
-        hintElem.textContent = "No more hints. Try carefully.";
+        if (hintCount < currentPuzzle.hints.length) {
+          hintElem.textContent = "Hint: " + currentPuzzle.hints[hintCount];
+          hintCount++;
+        } else {
+          hintElem.textContent = "No more hints. Try carefully.";
+        }
+        alert("Access Denied. Try again.");
       }
-      alert("Access Denied. Try again.");
+    };
+
+
+    // Inventory for clues
+    let inventory = [];
+
+    function addClue(clue) {
+      if (!inventory.includes(clue)) {
+        inventory.push(clue);
+        updateInventoryUI();
+      }
     }
-  }
 
-
-  // Inventory for clues
-  let inventory = [];
-
-  function addClue(clue) {
-    if (!inventory.includes(clue)) {
-      inventory.push(clue);
-      updateInventoryUI();
+    function updateInventoryUI() {
+      const list = document.getElementById("clueList");
+      list.innerHTML = "";
+      inventory.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+      });
     }
-  }
 
-  function updateInventoryUI() {
-    const list = document.getElementById("clueList");
-    list.innerHTML = "";
-    inventory.forEach(clue => {
-      const li = document.createElement("li");
-      li.textContent = clue;
-      list.appendChild(li);
+    // Neural guess game
+    window.checkGuess = function() {
+      const guessInput = document.getElementById("guessInput");
+      const result = document.getElementById("guessResult");
+      const userGuess = Number(guessInput.value);
+      if (!userGuess || userGuess < 1 || userGuess > 10) {
+        result.textContent = "Please enter a number between 1 and 10.";
+        result.style.color = "#ff4444";
+        return;
+      }
+      const aiNumber = Math.floor(Math.random() * 10) + 1;
+      if (userGuess === aiNumber) {
+        result.style.color = "#00ff99";
+        result.textContent = `Correct! The AI was thinking of ${aiNumber}.`;
+        addClue(`Neural guess game won with number ${aiNumber}`);
+        showNotification("New Data Log Unlocked!");
+        addSecretLog(`Neural guess ${aiNumber} matched by user.`);
+      } else {
+        result.style.color = "#ff6666";
+        result.textContent = `Wrong. The AI thought of ${aiNumber}. Try again.`;
+      }
+    };
+
+    // AI glitch events + dynamic themes
+    const glitches = [
+      "System memory fragmentation detected.",
+      "Unexpected recursive loop in AI subroutine.",
+      "Packet loss causing data desynchronization.",
+      "Quantum bit entanglement anomaly.",
+      "Overclocked neural node overheating.",
+      "Subsystem reboot initiated without warning.",
+      "Debug: 'gateway' referenced in core memory.",
+      "AI system override disabled temporarily."
+    ];
+
+    const themes = ['theme-glitch-matrix', 'theme-cyberpunk', 'theme-corrupted', 'theme-frozen-core'];
+
+    window.applyRandomTheme = function() {
+      const body = document.body;
+      // Remove previous glitch themes
+      themes.forEach(t => body.classList.remove(t));
+      // Pick one randomly
+      const chosen = themes[Math.floor(Math.random() * themes.length)];
+      body.classList.add(chosen);
+      // Animate transition - briefly flicker text shadows
+      body.style.transition = "background 1s ease, color 1s ease";
+    };
+
+    window.triggerGlitch = function() {
+      const idx = Math.floor(Math.random() * glitches.length);
+      document.getElementById("glitchOutput").textContent = glitches[idx];
+      applyRandomTheme();
+      addSecretLog(`Glitch event: ${glitches[idx]}`);
+      showNotification("AI Glitch Occurred!");
+    };
+
+    document.getElementById("glitchBtn").addEventListener("click", () => {
+      triggerGlitch();
     });
-  }
 
-  // Number Guessing Game
-  let secretNumber = Math.floor(Math.random() * 10) + 1;
-  let guessAttempts = 0;
+    // Hidden Data Logs - dynamic with adding secret logs
+    const baseLogs = [
+      "[2025-08-10 08:00:00] System boot sequence initialized.",
+      "[2025-08-10 08:01:22] Core AI modules online.",
+      "[2025-08-10 08:03:45] Neural network training session started.",
+      "[2025-08-10 08:05:10] Data compression algorithms engaged.",
+      "[2025-08-10 08:07:18] Diagnostic routines running.",
+      "[2025-08-10 08:10:00] Encryption key cycle completed.",
+      "[2025-08-10 08:12:33] AI system idle, awaiting input."
+    ];
 
-  function checkGuess() {
-    const input = parseInt(document.getElementById("guessInput").value);
-    const result = document.getElementById("guessResult");
-    guessAttempts++;
+    let dynamicLogPool = [
+      "System clock skew detected.",
+      "Processor load spike, throttling engaged.",
+      "Recursive function call stack limit nearing.",
+      "Memory leak patched in subroutine 5a.",
+      "Data corruption event flagged, rollback initiated.",
+      "Neural input normalized to baseline.",
+      "AI predictive model recalibrated.",
+      "Debug: 'gateway' referenced in core memory.",
+      "AI system override disabled temporarily."
+    ];
 
-    if (isNaN(input) || input < 1 || input > 10) {
-      result.textContent = "Please enter a number between 1 and 10.";
-      return;
+    let currentLogs = [...baseLogs];
+
+    const logContainer = document.getElementById("logsContent");
+
+    function renderLogs() {
+      logContainer.innerHTML = "";
+      currentLogs.forEach(log => {
+        const p = document.createElement("p");
+        p.textContent = log;
+        p.style.opacity = "1";
+        logContainer.appendChild(p);
+      });
+      logContainer.scrollTop = logContainer.scrollHeight;
     }
 
-    if (input === secretNumber) {
-      result.textContent = `Correct! The AI was thinking of ${secretNumber}. You’ve cracked the neural guess!`;
-      addClue("Neural guess cracked");
-      document.getElementById("guessBtn").disabled = true;
-      document.getElementById("guessInput").disabled = true;
-    } else if (guessAttempts >= 5) {
-      result.textContent = `Too many tries! The AI recalibrates and picks a new number. Try again.`;
-      guessAttempts = 0;
-      secretNumber = Math.floor(Math.random() * 10) + 1;
-    } else if (input < secretNumber) {
-      result.textContent = "Too low. Try a higher number.";
-    } else {
-      result.textContent = "Too high. Try a lower number.";
+    // Add a new random dynamic log every 10-20 seconds
+    function addDynamicLog() {
+      if (currentLogs.length > 40) {
+        currentLogs.shift();
+      }
+      const randomLog = dynamicLogPool[Math.floor(Math.random() * dynamicLogPool.length)];
+      const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
+      currentLogs.push(`[${timestamp}] AI: ${randomLog}`);
+      renderLogs();
     }
-  }
 
-  // AI Glitch Events
-  const glitches = [
-    "🛑 Warning: Quantum flux instability detected!",
-    "⚠️ Glitch: Neural pathways rerouted unexpectedly.",
-    "⚡ System overload... reboot sequence aborted.",
-    "🌀 Data packet lost in the void of cyberspace.",
-    "🧩 Puzzle mode activated: unsolvable... or is it?",
-    "🎭 AI personality modules swapping... confusion ensues.",
-    "🕳️ A black hole in memory storage. Curiously fascinating.",
-    "🔮 Predictive algorithm misfired — future uncertain.",
-    "👁️ Self-awareness module glitching... existential crisis imminent."
-  ];
+    // Add secret log entries triggered by events
+    function addSecretLog(message) {
+      const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
+      currentLogs.push(`[${timestamp}] SECRET: ${message}`);
+      renderLogs();
+    }
 
-  function triggerGlitch() {
-    const idx = Math.floor(Math.random() * glitches.length);
-    document.getElementById("glitchOutput").textContent = glitches[idx];
-  }
-
-  // Dynamic Data Logs
-
-  const logContainer = document.getElementById("logsContent");
-
-  const baseLogs = [
-    "[2025-08-10 04:12:01] AI: Monitoring neural feedback loop...",
-    "[2025-08-10 04:13:15] AI: Anomaly detected in sector 7G.",
-    "[2025-08-10 04:14:22] AI: Initiating corrective algorithm sequence.",
-    "[2025-08-10 04:15:47] AI: Protocol override pending user authentication.",
-    "[2025-08-10 04:16:00] AI: Awaiting passphrase to unlock next stage..."
-  ];
-
-  // Some dynamic logs with subtle clues:
-  const dynamicLogPool = [
-    "Warning: Gateway module initialized successfully.",
-    "User input expected: passphrase required.",
-    "Scanning network nexus for anomalies...",
-    "Security protocol active. Access level: restricted.",
-    "Unusual activity in secret node detected.",
-    "Encryption keys rotating. Synchronizing clocks.",
-    "Debug: 'gateway' referenced in core memory.",
-    "AI system override disabled temporarily."
-  ];
-
-  let currentLogs = [...baseLogs];
-
-  // Initialize logs UI
-  function renderLogs() {
-    logContainer.innerHTML = "";
-    currentLogs.forEach(log => {
-      const p = document.createElement("p");
-      p.textContent = log;
-      p.style.opacity = "1";
-      logContainer.appendChild(p);
+    // Toggle logs visibility
+    document.getElementById("toggleLogsBtn").addEventListener("click", () => {
+      const logs = document.getElementById("logsContent");
+      if (logs.style.display === "none" || logs.style.display === "") {
+        logs.style.display = "block";
+      } else {
+        logs.style.display = "none";
+      }
     });
-    logContainer.scrollTop = logContainer.scrollHeight;
-  }
 
-  // Add a new random dynamic log every 10-20 seconds
-  function addDynamicLog() {
-    if (currentLogs.length > 30) {
-      // Remove oldest log for scrolling effect
-      currentLogs.shift();
-    }
-    const randomLog = dynamicLogPool[Math.floor(Math.random() * dynamicLogPool.length)];
-    const timestamp = new Date().toISOString().replace("T", " ").split(".")[0];
-    currentLogs.push(`[${timestamp}] AI: ${randomLog}`);
+    // Start dynamic logs updating
     renderLogs();
-  }
+    setInterval(addDynamicLog, 10000 + Math.random() * 10000);
 
-  // Start dynamic logs after first render
-  renderLogs();
-  setInterval(addDynamicLog, 10000 + Math.random()*10000); // every 10-20s
+    // Passphrase gate
+    window.checkPassphrase = function() {
+      const input = document.getElementById("passphraseInput").value.trim().toLowerCase();
+      const feedback = document.getElementById("passFeedback");
+      const secretSection = document.getElementById("secretMessage");
 
-  // Toggle logs visibility
-  function toggleLogs() {
-    const logs = document.getElementById("logsContent");
-    if (logs.style.display === "none") {
-      logs.style.display = "block";
-    } else {
-      logs.style.display = "none";
+      // Check if input matches any clue's keyword (using last word of clue as simple passphrase)
+      let passphrases = inventory.map(clue => {
+        let words = clue.toLowerCase().split(" ");
+        return words[words.length - 1].replace(/[^a-z]/g, '');
+      });
+
+      if (passphrases.includes(input)) {
+        feedback.style.color = "#00ff99";
+        feedback.textContent = "Access Granted!";
+        secretSection.style.display = "block";
+        document.getElementById("passBtn").disabled = true;
+        document.getElementById("passphraseInput").disabled = true;
+        addSecretLog(`Passphrase '${input}' accepted. User unlocked secret message.`);
+        showNotification("Passphrase accepted! Secret unlocked.");
+      } else {
+        feedback.style.color = "#ff6666";
+        feedback.textContent = "Access Denied. Try a clue you've found.";
+      }
+    };
+
+    // Notification system
+    const notification = document.getElementById("notification");
+    let notificationTimeout;
+
+    function showNotification(text) {
+      notification.textContent = text;
+      notification.classList.add("show");
+      clearTimeout(notificationTimeout);
+      notificationTimeout = setTimeout(() => {
+        notification.classList.remove("show");
+      }, 4000);
     }
-  }
 
-  // Password Gate Section — must enter any clue from inventory to proceed
-  const secretPassphrases = inventory; // We'll dynamically check inventory for passphrases
-
-  function checkPassphrase() {
-    const input = document.getElementById("passphraseInput").value.trim().toLowerCase();
-    const feedback = document.getElementById("passFeedback");
-    const secretSection = document.getElementById("secretMessage");
-
-    // Check if input matches any clue's keyword (very simple match)
-    // Extract last word from each clue in inventory as passphrase candidate
-    let passphrases = inventory.map(clue => {
-      let words = clue.toLowerCase().split(" ");
-      return words[words.length - 1].replace(/[^a-z]/g, ''); // simple cleaning
-    });
-
-    if (passphrases.includes(input)) {
-      feedback.style.color = "#00ff99";
-      feedback.textContent = "Access Granted!";
-      secretSection.style.display = "block";
-      document.getElementById("passBtn").disabled = true;
-      document.getElementById("passphraseInput").disabled = true;
-    } else {
-      feedback.style.color = "#ff6666";
-      feedback.textContent = "Access Denied. Try a clue you've found.";
-    }
-  }
+  }); // end DOMContentLoaded
 </script>
   body {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
@@ -244,6 +279,7 @@
     max-width: 900px;
     margin: auto;
     user-select: none;
+    transition: background 1.2s ease, color 1.2s ease;
   }
   h1, h2 {
     text-align: center;
@@ -293,6 +329,7 @@
     border-radius: 10px;
     border: 1px solid #2ab8b0;
     user-select: text;
+    transition: background 0.7s ease;
   }
   #codePuzzle, #guessGame, #glitchSection, #dataLogs, #secretMessage, #inventory, #passwordGate {
     background: #1a1a2e;
@@ -304,6 +341,7 @@
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 0 15px #0ff;
+    transition: background 1s ease, box-shadow 1s ease;
   }
   input[type="text"], input[type="number"] {
     font-family: monospace;
@@ -352,6 +390,118 @@
     border-radius: 6px;
     font-family: monospace;
   }
+  #logsContent {
+    font-family: monospace;
+    font-size: 0.9em;
+    background:#051a1a;
+    padding:15px;
+    border-radius:10px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* Notification bubble for new logs */
+  #notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #40e0d0;
+    color: #0f0c29;
+    padding: 12px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 0 12px #40e0d0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 1000;
+  }
+  #notification.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Themes for glitch states */
+
+  /* 1) Glitch Matrix */
+  .theme-glitch-matrix {
+    background: #000000 !important;
+    color: #00ff00 !important;
+    font-family: 'Courier New', monospace !important;
+    text-shadow:
+      0 0 10px #00ff00,
+      0 0 20px #00ff00,
+      0 0 30px #00ff00;
+  }
+  .theme-glitch-matrix #codePuzzle,
+  .theme-glitch-matrix #guessGame,
+  .theme-glitch-matrix #glitchSection,
+  .theme-glitch-matrix #dataLogs,
+  .theme-glitch-matrix #inventory,
+  .theme-glitch-matrix #passwordGate {
+    background: #001100 !important;
+    box-shadow: 0 0 20px #00ff00 !important;
+  }
+
+  /* 2) Cyberpunk Noir */
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+  .theme-cyberpunk {
+    background: linear-gradient(45deg, #330033, #660066) !important;
+    color: #ff33cc !important;
+    font-family: 'Orbitron', sans-serif !important;
+    text-shadow: 0 0 6px #ff33cc;
+  }
+  .theme-cyberpunk #codePuzzle,
+  .theme-cyberpunk #guessGame,
+  .theme-cyberpunk #glitchSection,
+  .theme-cyberpunk #dataLogs,
+  .theme-cyberpunk #inventory,
+  .theme-cyberpunk #passwordGate {
+    background: #660066 !important;
+    box-shadow: 0 0 20px #ff33cc !important;
+  }
+
+  /* 3) Corrupted Data */
+  .theme-corrupted {
+    background: #1f1f1f !important;
+    color: #ff4400 !important;
+    font-family: 'Courier New', monospace !important;
+    text-shadow:
+      1px 0 red,
+      -1px 0 cyan;
+    animation: glitch-flicker 1.5s infinite alternate;
+  }
+  .theme-corrupted #codePuzzle,
+  .theme-corrupted #guessGame,
+  .theme-corrupted #glitchSection,
+  .theme-corrupted #dataLogs,
+  .theme-corrupted #inventory,
+  .theme-corrupted #passwordGate {
+    background: #330000 !important;
+    box-shadow: 0 0 20px #ff4400 !important;
+  }
+
+  @keyframes glitch-flicker {
+    0%, 100% { text-shadow: 1px 0 red, -1px 0 cyan; }
+    50% { text-shadow: 2px 0 red, -2px 0 cyan; }
+  }
+
+  /* 4) Frozen Core */
+  .theme-frozen-core {
+    background: linear-gradient(135deg, #0a192f, #274c70) !important;
+    color: #a0e7ff !important;
+    font-family: 'Courier New', monospace !important;
+    text-shadow: 0 0 5px #a0e7ff;
+  }
+  .theme-frozen-core #codePuzzle,
+  .theme-frozen-core #guessGame,
+  .theme-frozen-core #glitchSection,
+  .theme-frozen-core #dataLogs,
+  .theme-frozen-core #inventory,
+  .theme-frozen-core #passwordGate {
+    background: #104070 !important;
+    box-shadow: 0 0 20px #a0e7ff !important;
+  }
 </style>
 </head>
 <body>
@@ -388,14 +538,14 @@
 
   <section id="glitchSection">
     <h2>AI Glitch Events</h2>
-    <button onclick="triggerGlitch()">Trigger AI Glitch</button>
+    <button id="glitchBtn">Trigger AI Glitch</button>
     <p id="glitchOutput">No glitches detected.</p>
   </section>
 
   <section id="dataLogs">
     <h2>Hidden Data Logs</h2>
-    <button onclick="toggleLogs()">Reveal / Hide Logs</button>
-    <div id="logsContent" style="display:none; margin-top:15px; max-height: 200px; overflow-y: auto; background:#051a1a; padding:15px; border-radius:10px; font-family: monospace; font-size: 0.9em;">
+    <button id="toggleLogsBtn">Reveal / Hide Logs</button>
+    <div id="logsContent" style="display:none;">
       <!-- Logs dynamically added here -->
     </div>
   </section>
@@ -427,6 +577,7 @@
 
   <footer>© 2025 AI Nexus — A safe digital frontier</footer>
 
+  <div id="notification">New Data Log Unlocked!</div>
 
 </body>
 </html>

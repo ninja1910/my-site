@@ -141,7 +141,7 @@
     <h2>Code Puzzle — Unlock the Hidden Protocol</h2>
     <p><strong>Decrypt this passphrase:</strong></p>
     <pre>
---. .- - . .-- .- -.-- / - --- / -. . -..- ..- ...</pre>
+--. .- - . .-- .- -.--</pre>
     <p>Enter the decoded word:</p>
     <input type="text" id="codeInput" placeholder="Your answer here..." autocomplete="off" />
     <button id="codeBtn" onclick="checkCode()">Unlock</button>
@@ -320,7 +320,7 @@
       return;
     }
 
-    if (input === "gateway") {
+    if (input === "gateway to nexus") {
       feedback.style.color = "#00ff88";
       feedback.textContent = "Passphrase accepted. Access granted.";
       document.getElementById("secretMessage").style.display = "block";
